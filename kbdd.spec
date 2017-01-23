@@ -5,11 +5,14 @@ Summary:        Per window keyboard layout
 
 License:        GPLv3+
 URL:            https://github.com/qnikst/kbdd
-Source0:        https://github.com/qnikst/kbdd/archive/v%{version}.tar.gz
+Source0:        %{url}/archive/v%{version}/%{name}-%{version}.tar.gz
 
+BuildRequires:  autoconf
 BuildRequires:  automake
-BuildRequires:  dbus-glib-devel
-
+BuildRequires:  gcc
+BuildRequires:  pkgconfig(x11)
+BuildRequires:  pkgconfig(dbus-glib-1)
+BuildRequires:  pkgconfig(glib-2.0)
 
 %description
 Simple daemon and library to make per window layout using XKB
@@ -17,19 +20,14 @@ Simple daemon and library to make per window layout using XKB
 
 %prep
 %autosetup
-aclocal
-# automake --add-missing
-autoreconf -if
 
 %build
+autoreconf -vfi
 %configure
 %make_build
 
-
 %install
-rm -rf $RPM_BUILD_ROOT
 %make_install
-
 
 %files
 %license COPYING
@@ -37,7 +35,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/%{name}
 %{_datadir}/dbus-1/interfaces/%{name}-service-interface.xml
 %{_mandir}/man1/%{name}.1*
-
 
 %changelog
 * Mon Jan 23 2017 vascom <vascom2@gmail.com> - 0.7.1-1
